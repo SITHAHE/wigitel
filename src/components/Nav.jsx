@@ -22,11 +22,18 @@ export default function Nav() {
     <motion.header
       initial={{ y: -40, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 1, delay: 0.4, ease: [0.19, 1, 0.22, 1] }}
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-        scrolled ? 'bg-white/70 backdrop-blur-xl border-b border-hairline/70' : 'bg-transparent'
+      className={`fixed inset-x-0 top-0 z-50 rounded-b-[22px] border border-t-0 backdrop-blur-2xl backdrop-saturate-150 transition-all duration-500 ${
+        scrolled
+          ? 'border-white/50 bg-white/55 shadow-[inset_0_1px_0_rgba(255,255,255,0.7),0_20px_50px_-26px_rgba(21,74,166,0.4)]'
+          : 'border-white/35 bg-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.5)]'
       }`}
     >
-      <nav className="wrap-wide flex h-[68px] items-center justify-between">
+      {/* Бегущий стеклянный блик — только над панелью (не задевает мобильное меню) */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[68px] overflow-hidden rounded-b-[22px]">
+        <div className="glass-sheen" />
+      </div>
+
+      <nav className="wrap-wide relative flex h-[68px] items-center justify-between">
         <a href="#top" className="flex items-center gap-2.5 text-ink transition-colors">
           <span className="grid h-7 w-7 place-items-center rounded-lg bg-gradient-to-br from-sky to-accent text-white text-sm font-bold shadow-sm">W</span>
           <span className="font-hero text-[19px] font-medium">Wigitel</span>
@@ -42,7 +49,7 @@ export default function Nav() {
           ))}
         </ul>
 
-        <a href="https://t.me/wigitel" target="_blank" rel="noreferrer" className="pill pill-accent hidden md:inline-flex !py-2.5 !px-6 !text-[15px]">
+        <a href="https://t.me/wigitel" target="_blank" rel="noreferrer" className="pill pill-accent !hidden md:!inline-flex !py-2.5 !px-6 !text-[15px]">
           Telegram
         </a>
 
@@ -59,7 +66,7 @@ export default function Nav() {
       {open && (
         <motion.div
           initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }}
-          className="overflow-hidden border-t border-hairline bg-white/95 backdrop-blur-xl md:hidden"
+          className="overflow-hidden rounded-b-[22px] border-t border-white/40 bg-white/35 backdrop-blur-2xl backdrop-saturate-150 md:hidden"
         >
           <ul className="wrap flex flex-col gap-1 py-4">
             {links.map((l) => (

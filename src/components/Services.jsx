@@ -6,9 +6,9 @@ import { services, steps } from '../data'
 // огромный текст, hover сдвигает строку и проявляет описание.
 export default function Services() {
   return (
-    <section id="services" className="relative bg-paper py-[clamp(100px,16vh,200px)]">
+    <section id="services" className="relative bg-paper py-20 md:py-[clamp(100px,16vh,200px)]">
       <div className="wrap-wide">
-        <p className="section-label mb-14"><Scramble text="03 — Услуги" /></p>
+        <p className="section-label mb-8 md:mb-14"><Scramble text="03 — Услуги" /></p>
 
         <div className="border-t border-hairline">
           {services.map((s, i) => (
@@ -38,8 +38,8 @@ export default function Services() {
         </div>
 
         {/* Процесс — компактная лента шагов */}
-        <div className="mt-24">
-          <p className="section-label mb-10"><Scramble text="Как мы работаем" /></p>
+        <div className="mt-16 md:mt-24">
+          <p className="section-label mb-8 md:mb-10"><Scramble text="Как мы работаем" /></p>
           <div className="grid gap-px overflow-hidden rounded-[28px] border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-4">
             {steps.map((st, i) => (
               <motion.div

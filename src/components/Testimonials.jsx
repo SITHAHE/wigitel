@@ -4,8 +4,8 @@ import { testimonials } from '../data'
 // Отзывы — бесконечная лента карточек-цитат, замирает при наведении.
 export default function Testimonials() {
   return (
-    <section className="relative overflow-hidden bg-paper py-[clamp(90px,14vh,180px)]">
-      <div className="wrap-wide mb-14">
+    <section className="relative overflow-hidden bg-paper py-20 md:py-[clamp(90px,14vh,180px)]">
+      <div className="wrap-wide mb-10 md:mb-14">
         <p className="section-label mb-6"><Scramble text="06 — Отзывы" /></p>
         <h2 className="font-display max-w-[18ch] text-[clamp(1.8rem,4.4vw,3.6rem)] font-medium leading-tight text-ink">
           Что говорят <span className="text-outline-accent">клиенты</span>

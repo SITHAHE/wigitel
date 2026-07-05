@@ -6,9 +6,9 @@ import { tiers } from '../data'
 // Тарифы — три статусных плана, средний — глубокий синий монолит.
 export default function Pricing() {
   return (
-    <section id="pricing" className="relative bg-canvas py-[clamp(100px,16vh,200px)]">
+    <section id="pricing" className="relative bg-canvas py-20 md:py-[clamp(100px,16vh,200px)]">
       <div className="wrap-wide">
-        <div className="mb-16 flex flex-col justify-between gap-8 md:flex-row md:items-end">
+        <div className="mb-10 md:mb-16 flex flex-col justify-between gap-8 md:flex-row md:items-end">
           <div>
             <p className="section-label mb-6"><Scramble text="05 — Тарифы" /></p>
             <h2 className="font-display text-[clamp(1.8rem,4.4vw,3.6rem)] font-medium leading-tight text-ink">

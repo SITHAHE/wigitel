@@ -14,10 +14,10 @@ const THEMES = {
 // в стопку, каждая предыдущая слегка уезжает и уменьшается под новой.
 export default function Principles() {
   return (
-    <section className="relative bg-paper py-[clamp(100px,16vh,200px)]">
+    <section className="relative bg-paper py-20 md:py-[clamp(100px,16vh,200px)]">
       <div className="wrap-wide">
         <p className="section-label mb-6"><Scramble text="04 — Принципы" /></p>
-        <h2 className="font-display mb-20 max-w-[16ch] text-[clamp(1.8rem,4.4vw,3.6rem)] font-medium leading-tight text-ink">
+        <h2 className="font-display mb-10 md:mb-20 max-w-[16ch] text-[clamp(1.8rem,4.4vw,3.6rem)] font-medium leading-tight text-ink">
           На чём стоит <span className="text-outline">Wigitel</span>
         </h2>
 

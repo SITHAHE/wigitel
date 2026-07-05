@@ -1,10 +1,8 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
+// Без StrictMode: его двойной mount в dev ломает framer-motion whileInView
+// (once:true) — часть reveal-анимаций «залипала» в initial-состоянии,
+// из-за чего, например, заголовок в секции «Контакт» оставался пустым.
+ReactDOM.createRoot(document.getElementById('root')).render(<App />)

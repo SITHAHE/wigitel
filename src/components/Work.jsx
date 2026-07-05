@@ -51,7 +51,7 @@ export default function Work() {
             {/* Финальная карточка-приглашение */}
             <a
               href="#contact"
-              className="group relative flex w-[52vw] max-w-[680px] shrink-0 flex-col items-center justify-center rounded-[32px] bg-gradient-to-br from-accent to-[#5aa0f2] p-10 text-center text-white sm:w-[38vw]"
+              className="group relative flex w-[70vw] max-w-[680px] shrink-0 flex-col items-center justify-center rounded-[32px] bg-gradient-to-br from-accent to-[#5aa0f2] p-10 text-center text-white sm:w-[42vw] lg:w-[38vw]"
             >
               <span className="font-display text-[clamp(1.4rem,2.6vw,2.2rem)] font-medium leading-snug">
                 Здесь будет<br />ваш проект
@@ -73,7 +73,7 @@ export default function Work() {
 
 function Card({ p, i, onOpen }) {
   return (
-    <button type="button" onClick={onOpen} className="group relative w-[72vw] max-w-[900px] shrink-0 cursor-pointer text-left sm:w-[56vw]">
+    <button type="button" onClick={onOpen} className="group relative w-[84vw] max-w-[900px] shrink-0 cursor-pointer text-left sm:w-[60vw] lg:w-[56vw]">
       <div className="relative overflow-hidden rounded-[32px] bg-frost shadow-[0_30px_80px_-40px_rgba(13,43,94,0.35)]">
         <div className="aspect-[16/10]">
           <img
@@ -94,17 +94,17 @@ function Card({ p, i, onOpen }) {
         </span>
       </div>
 
-      <div className="mt-6 flex items-start justify-between gap-6 px-1">
-        <div>
+      <div className="mt-5 flex flex-col gap-3 px-1 sm:mt-6 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
+        <div className="min-w-0">
           <h3 className="flex items-center gap-3 text-[clamp(1.3rem,2.2vw,1.9rem)] font-semibold tracking-tight text-ink">
-            <span className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: p.accent }} />
+            <span className="inline-block h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: p.accent }} />
             {p.title}
           </h3>
           <p className="mt-1.5 text-[15px] text-ink-soft">{p.niche}</p>
         </div>
-        <div className="flex shrink-0 flex-wrap justify-end gap-2 pt-1">
+        <div className="flex flex-wrap gap-2 pt-0.5 sm:shrink-0 sm:justify-end sm:pt-1">
           {p.tags.slice(0, 2).map((t) => (
-            <span key={t} className="rounded-full border border-ink/15 px-3.5 py-1.5 text-[12px] font-medium text-ink-soft">
+            <span key={t} className="whitespace-nowrap rounded-full border border-ink/15 px-3.5 py-1.5 text-[12px] font-medium text-ink-soft">
               {t}
             </span>
           ))}

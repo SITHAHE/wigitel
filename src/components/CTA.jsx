@@ -28,7 +28,7 @@ export default function CTA() {
       id="contact"
       ref={ref}
       onMouseMove={onMove}
-      className="relative overflow-hidden bg-[#081b3f] py-[clamp(120px,22vh,280px)] text-white"
+      className="relative overflow-hidden bg-[#081b3f] py-24 md:py-[clamp(120px,22vh,280px)] text-white"
     >
       {/* световое пятно за курсором */}
       <div
@@ -47,7 +47,7 @@ export default function CTA() {
         {/* Гигантский призыв */}
         <h2 className="font-display max-w-[16ch] text-[clamp(2.4rem,8vw,7.5rem)] font-medium leading-[1.02]">
           {['Расскажите', 'о', 'вашем'].map((w, i) => (
-            <Word key={w} delay={i * 0.08}>{w}{' '}</Word>
+            <Word key={w} delay={i * 0.08}>{w}</Word>
           ))}
           <Word delay={0.24} className="text-outline-accent">проекте</Word>
         </h2>
@@ -65,7 +65,7 @@ export default function CTA() {
                 href="https://t.me/wigitel"
                 target="_blank"
                 rel="noreferrer"
-                className="group inline-flex items-center gap-4 rounded-full bg-white py-5 pl-8 pr-6 text-[18px] font-medium text-ink-deep shadow-[0_20px_60px_-15px_rgba(47,128,237,0.6)] transition-all duration-500 hover:bg-accent hover:text-white"
+                className="group inline-flex items-center gap-3 whitespace-nowrap rounded-full bg-white py-5 pl-6 pr-5 text-[16px] font-medium text-ink-deep shadow-[0_20px_60px_-15px_rgba(47,128,237,0.6)] transition-all duration-500 hover:bg-accent hover:text-white sm:gap-4 sm:pl-8 sm:pr-6 sm:text-[18px]"
               >
                 <TgIcon /> Написать в Telegram
                 <span className="grid h-9 w-9 place-items-center rounded-full bg-ink-deep text-white transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:rotate-45 group-hover:bg-white group-hover:text-accent">↗</span>
@@ -111,18 +111,25 @@ export default function CTA() {
 }
 
 function Word({ children, delay = 0, className = '' }) {
+  // Триггер whileInView висит на ВНЕШНЕМ (всегда видимом) span-маске, а не на
+  // внутреннем: внутренний стартует со сдвигом y:110% и полностью вытолкнут за
+  // пределы overflow-hidden, поэтому IntersectionObserver никогда бы не увидел
+  // его как «в зоне видимости» — reveal залипал в initial. Каскад через variants.
   return (
-    <span className="inline-block overflow-hidden pb-[0.1em] -mb-[0.1em]">
+    <motion.span
+      className="mr-[0.22em] inline-block overflow-hidden pb-[0.1em] -mb-[0.1em] align-top"
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, margin: '0px 0px -12% 0px' }}
+    >
       <motion.span
         className={`inline-block ${className}`}
-        initial={{ y: '110%' }}
-        whileInView={{ y: 0 }}
-        viewport={{ once: true, margin: '-80px' }}
+        variants={{ hidden: { y: '110%' }, show: { y: 0 } }}
         transition={{ duration: 1.1, delay, ease: [0.19, 1, 0.22, 1] }}
       >
         {children}
       </motion.span>
-    </span>
+    </motion.span>
   )
 }
 
