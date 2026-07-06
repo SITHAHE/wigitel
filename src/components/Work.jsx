@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from 'react'
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion'
 import Scramble from './Scramble'
 import CaseOverlay from './CaseOverlay'
 import { projects } from '../data'
@@ -26,7 +26,11 @@ export default function Work() {
   }, [])
 
   const { scrollYProgress } = useScroll({ target: sectionRef })
-  const x = useTransform(scrollYProgress, [0, 1], [0, -dist])
+  const xRaw = useTransform(scrollYProgress, [0, 1], [0, -dist])
+  // Пружина сглаживает x на частоте дисплея: тач-скролл iOS шлёт события
+  // реже 120 Гц, из-за чего прямая привязка к скроллу дёргалась. Мягкая,
+  // но отзывчивая — почти без задержки, но убирает микрорывки.
+  const x = useSpring(xRaw, { stiffness: 260, damping: 40, mass: 0.35 })
 
   return (
     <section id="work" className="relative bg-canvas">

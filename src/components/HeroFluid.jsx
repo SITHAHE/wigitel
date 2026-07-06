@@ -167,12 +167,29 @@ export default function HeroFluid() {
     const resize = () => {
       const w = canvas.clientWidth || window.innerWidth
       const h = canvas.clientHeight || window.innerHeight
-      canvas.width = Math.max(1, Math.floor(w * dpr))
-      canvas.height = Math.max(1, Math.floor(h * dpr))
+      const bw = Math.max(1, Math.floor(w * dpr))
+      const bh = Math.max(1, Math.floor(h * dpr))
+      if (canvas.width === bw && canvas.height === bh) return
+      canvas.width = bw
+      canvas.height = bh
       gl.viewport(0, 0, canvas.width, canvas.height)
     }
     resize()
+    // iOS Safari: фактический размер канваса устаканивается только после
+    // первого layout и меняется при сворачивании адресной строки. Без этого
+    // шейдер стартует с кривым соотношением сторон и «чинится» лишь после
+    // первого скролла. ResizeObserver ловит сам элемент, visualViewport —
+    // изменения видимой области, плюс страховочные ресайзы на первых кадрах.
+    let ro
+    if (typeof ResizeObserver !== 'undefined') {
+      ro = new ResizeObserver(resize)
+      ro.observe(canvas)
+    }
     window.addEventListener('resize', resize)
+    window.visualViewport && window.visualViewport.addEventListener('resize', resize)
+    requestAnimationFrame(resize)
+    const t0 = setTimeout(resize, 200)
+    const t1 = setTimeout(resize, 600)
 
     let shown = false
     const start = performance.now()
@@ -191,7 +208,11 @@ export default function HeroFluid() {
 
     return () => {
       cancelAnimationFrame(raf)
+      clearTimeout(t0)
+      clearTimeout(t1)
+      ro && ro.disconnect()
       window.removeEventListener('resize', resize)
+      window.visualViewport && window.visualViewport.removeEventListener('resize', resize)
     }
   }, [])
 
