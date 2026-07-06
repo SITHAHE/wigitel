@@ -28,9 +28,9 @@ export default function Work() {
   const { scrollYProgress } = useScroll({ target: sectionRef })
   const xRaw = useTransform(scrollYProgress, [0, 1], [0, -dist])
   // Пружина сглаживает x на частоте дисплея: тач-скролл iOS шлёт события
-  // реже 120 Гц, из-за чего прямая привязка к скроллу дёргалась. Мягкая,
-  // но отзывчивая — почти без задержки, но убирает микрорывки.
-  const x = useSpring(xRaw, { stiffness: 260, damping: 40, mass: 0.35 })
+  // реже 120 Гц, из-за чего прямая привязка к скроллу дёргалась. Мягкие
+  // значения дают больше «глайда»; передемпфировано (нет отскока/болтанки).
+  const x = useSpring(xRaw, { stiffness: 120, damping: 26, mass: 0.45 })
 
   return (
     <section id="work" className="relative bg-canvas">
