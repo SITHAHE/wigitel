@@ -57,7 +57,11 @@ const browser = await puppeteer.launch({
 try {
   const page = await browser.newPage()
   await page.setViewport({ width: 1440, height: 900, deviceScaleFactor: 1 })
-  await page.goto(`http://localhost:${PORT}/`, { waitUntil: 'networkidle0', timeout: 60000 })
+  // 'domcontentloaded', а не 'networkidle0': если внешний запрос (Google Fonts)
+  // висит, «тишина сети» не наступает и navigation вылетает по таймауту.
+  // Достаточно дождаться DOM + дать React смонтироваться фиксированной паузой.
+  await page.goto(`http://localhost:${PORT}/`, { waitUntil: 'domcontentloaded', timeout: 60000 })
+  await new Promise((r) => setTimeout(r, 2500))
 
   // Прокручиваем всю страницу шагами — так срабатывают все IntersectionObserver
   // (reveal) и запускаются scramble-заголовки. Через lenis, если он есть.
