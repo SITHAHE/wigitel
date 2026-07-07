@@ -1,0 +1,16 @@
+{
+  "name": "Wigitel — веб-студия",
+  "short_name": "Wigitel",
+  "description": "Создание сайтов и лендингов под ключ в Санкт-Петербурге.",
+  "lang": "ru-RU",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#eaf4ff",
+  "theme_color": "#eaf4ff",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
