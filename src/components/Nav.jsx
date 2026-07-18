@@ -54,7 +54,12 @@ export default function Nav() {
         </a>
 
         {/* Мобильное меню */}
-        <button className="md:hidden text-ink transition-colors" onClick={() => setOpen(!open)} aria-label="Меню">
+        <button
+          className="-mr-2.5 flex h-11 w-11 items-center justify-center text-ink transition-colors md:hidden"
+          onClick={() => setOpen(!open)}
+          aria-label={open ? 'Закрыть меню' : 'Открыть меню'}
+          aria-expanded={open}
+        >
           <div className="flex flex-col gap-[5px]">
             <span className={`h-[2px] w-6 bg-current transition-transform ${open ? 'translate-y-[7px] rotate-45' : ''}`} />
             <span className={`h-[2px] w-6 bg-current transition-opacity ${open ? 'opacity-0' : ''}`} />

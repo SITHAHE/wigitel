@@ -314,3 +314,22 @@ body {
   40%      { opacity: 1; }
   60%      { transform: translateX(40%); opacity: 0; }
 }
+
+/* ============================================================
+   ДОСТУПНОСТЬ: уменьшить движение
+   Гасим все бесконечные декоративные анимации (блобы, маркизы,
+   spin-badge, бегущий блик) и убираем инерцию/плавную прокрутку.
+   Framer-motion reveal'ы и WebGL-hero гасятся в JS отдельно.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .glass-sheen { display: none; }
+}

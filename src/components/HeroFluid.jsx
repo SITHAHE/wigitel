@@ -191,23 +191,58 @@ export default function HeroFluid() {
     const t0 = setTimeout(resize, 200)
     const t1 = setTimeout(resize, 600)
 
-    let shown = false
-    const start = performance.now()
-    let raf
-    const frame = (now) => {
-      gl.uniform1f(uTime, (now - start) / 1000)
+    const reduceMotion = window.matchMedia
+      && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    const drawOnce = (tSec) => {
+      gl.uniform1f(uTime, tSec)
       gl.uniform2f(uRes, canvas.width, canvas.height)
       // Линза отключена (radius = 0 → inGlass всегда 0): остаются только
       // чистые волны света. Уберём — по просьбе, композиция сферы не зашла.
       gl.uniform3f(uCircle, 0, 0, 0)
       gl.drawArrays(gl.TRIANGLES, 0, 3)
       if (!shown) { shown = true; canvas.style.opacity = '1' }
+    }
+
+    let shown = false
+    const start = performance.now()
+    let raf = 0
+    let visible = true
+    const frame = (now) => {
+      drawOnce((now - start) / 1000)
       raf = requestAnimationFrame(frame)
     }
-    raf = requestAnimationFrame(frame)
+    const play = () => { if (!raf && visible) raf = requestAnimationFrame(frame) }
+    const stop = () => { if (raf) { cancelAnimationFrame(raf); raf = 0 } }
+
+    if (reduceMotion) {
+      // Уважаем системную настройку: рисуем один статичный кадр волн, без анимации.
+      drawOnce(12)
+    } else {
+      // Крутим шейдер только пока hero виден: за экраном rAF на паузе —
+      // экономия CPU/батареи и никакого фонового джанка при скролле низа.
+      const io = typeof IntersectionObserver !== 'undefined'
+        ? new IntersectionObserver(([e]) => {
+            visible = e.isIntersecting
+            if (visible) play(); else stop()
+          }, { threshold: 0 })
+        : null
+      io ? io.observe(canvas) : play()
+      // Не жечь кадры в фоновой вкладке.
+      const onVis = () => { if (document.hidden) stop(); else if (visible) play() }
+      document.addEventListener('visibilitychange', onVis)
+      play()
+
+      canvas.__cleanupLoop = () => {
+        stop()
+        io && io.disconnect()
+        document.removeEventListener('visibilitychange', onVis)
+      }
+    }
 
     return () => {
-      cancelAnimationFrame(raf)
+      stop()
+      canvas.__cleanupLoop && canvas.__cleanupLoop()
       clearTimeout(t0)
       clearTimeout(t1)
       ro && ro.disconnect()

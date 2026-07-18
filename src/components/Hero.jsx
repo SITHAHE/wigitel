@@ -17,7 +17,8 @@ export default function Hero() {
           transition={{ duration: 1.5, delay: 0.4, ease: [0.19, 1, 0.22, 1] }}
           className="font-hero text-center text-ink-deep leading-none text-[clamp(2.8rem,7.5vw,7rem)]"
         >
-          W<span className="hero-i">i</span>g<span className="hero-i">i</span>tel
+          <span aria-hidden="true">W<span className="hero-i">i</span>g<span className="hero-i">i</span>tel</span>
+          <span className="sr-only"> — веб-студия: создание сайтов под ключ в Санкт-Петербурге</span>
         </motion.h1>
 
         <motion.p
