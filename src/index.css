@@ -316,6 +316,47 @@ body {
 }
 
 /* ============================================================
+   ШАПКА — выезд из-за верхнего края (чистый CSS, без flash)
+   Первый же кадр (в т.ч. пре-рендеренный HTML до JS) стартует
+   за краем экрана, поэтому панель не «мигает» в финале и не
+   переигрывает анимацию после монтирования React.
+   ============================================================ */
+@keyframes navSlideIn {
+  from { transform: translateY(-115%); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+.nav-enter { animation: navSlideIn 0.9s cubic-bezier(0.19, 1, 0.22, 1) 0.15s both; }
+
+/* ============================================================
+   ЖИДКОЕ СТЕКЛО iPhone (liquid glass) для шапки
+   Настоящее преломление контента ЗА панелью: SVG-фильтр
+   (feTurbulence → feDisplacementMap) смещает пиксели фона по
+   органическому шуму — при скролле контент «плывёт» сквозь стекло,
+   как на iOS. Текст самой шапки поверх панели остаётся чётким.
+   Фолбэк — обычный frost-blur (Safari/старые движки).
+   ============================================================ */
+.liquid-glass {
+  -webkit-backdrop-filter: blur(16px) saturate(165%);
+  backdrop-filter: blur(16px) saturate(165%);
+}
+@supports (backdrop-filter: url("#f")) or (-webkit-backdrop-filter: url("#f")) {
+  .liquid-glass {
+    -webkit-backdrop-filter: url("#nav-liquid-glass");
+    backdrop-filter: url("#nav-liquid-glass");
+  }
+}
+/* Спекулярные блики стекла: яркая верхняя кромка + мягкое свечение снизу */
+.liquid-glass::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  pointer-events: none; z-index: 0;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 40%),
+    radial-gradient(120% 80% at 50% -10%, rgba(255,255,255,0.35), transparent 60%);
+  mix-blend-mode: screen;
+  opacity: 0.9;
+}
+
+/* ============================================================
    ДОСТУПНОСТЬ: уменьшить движение
    Гасим все бесконечные декоративные анимации (блобы, маркизы,
    spin-badge, бегущий блик) и убираем инерцию/плавную прокрутку.

@@ -19,21 +19,31 @@ export default function Nav() {
   }, [])
 
   return (
-    <motion.header
-      initial={{ y: -40, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 1, delay: 0.4, ease: [0.19, 1, 0.22, 1] }}
-      className={`fixed inset-x-0 top-0 z-50 rounded-b-[22px] border border-t-0 backdrop-blur-2xl backdrop-saturate-150 transition-all duration-500 ${
+    <header
+      className={`liquid-glass nav-enter fixed inset-x-0 top-0 z-50 rounded-b-[22px] border border-t-0 transition-[background-color,border-color,box-shadow] duration-500 ${
         scrolled
-          ? 'border-white/50 bg-white/55 shadow-[inset_0_1px_0_rgba(255,255,255,0.7),0_20px_50px_-26px_rgba(21,74,166,0.4)]'
-          : 'border-white/35 bg-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.5)]'
+          ? 'border-white/60 bg-white/45 shadow-[inset_0_1px_0_rgba(255,255,255,0.7),0_20px_50px_-26px_rgba(21,74,166,0.4)]'
+          : 'border-white/40 bg-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.5)]'
       }`}
     >
+      {/* SVG-фильтр «жидкого стекла»: преломляет фон за шапкой (backdrop-filter).
+          Невидим сам по себе (0×0). feTurbulence даёт органический шум,
+          feDisplacementMap смещает по нему пиксели фона — эффект линзы iOS. */}
+      <svg className="pointer-events-none absolute h-0 w-0" aria-hidden="true" focusable="false">
+        <filter id="nav-liquid-glass" x="-30%" y="-30%" width="160%" height="160%" colorInterpolationFilters="sRGB">
+          <feTurbulence type="fractalNoise" baseFrequency="0.006 0.011" numOctaves="2" seed="4" result="turb" />
+          <feGaussianBlur in="turb" stdDeviation="3" result="turbSoft" />
+          <feDisplacementMap in="SourceGraphic" in2="turbSoft" scale="38" xChannelSelector="R" yChannelSelector="G" result="disp" />
+          <feGaussianBlur in="disp" stdDeviation="5" />
+        </filter>
+      </svg>
+
       {/* Бегущий стеклянный блик — только над панелью (не задевает мобильное меню) */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-[68px] overflow-hidden rounded-b-[22px]">
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-[1] h-[68px] overflow-hidden rounded-b-[22px]">
         <div className="glass-sheen" />
       </div>
 
-      <nav className="wrap-wide relative flex h-[68px] items-center justify-between">
+      <nav className="wrap-wide relative z-[2] flex h-[68px] items-center justify-between">
         <a href="#top" className="flex items-center gap-2.5 text-ink transition-colors">
           <span className="grid h-7 w-7 place-items-center rounded-lg bg-gradient-to-br from-sky to-accent text-white text-sm font-bold shadow-sm">W</span>
           <span className="font-hero text-[19px] font-medium">Wigitel</span>
@@ -85,6 +95,6 @@ export default function Nav() {
           </ul>
         </motion.div>
       )}
-    </motion.header>
+    </header>
   )
 }
