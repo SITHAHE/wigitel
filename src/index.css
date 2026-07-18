@@ -355,6 +355,16 @@ body {
   mix-blend-mode: screen;
   opacity: 0.9;
 }
+/* Мобильные: более матовое стекло. Тонкое SVG-преломление на маленьком
+   экране читается как шум — заменяем на плотный frost (тяжёлый blur +
+   стабильно матово-белый фон, независимо от состояния скролла). */
+@media (max-width: 767px) {
+  .liquid-glass {
+    -webkit-backdrop-filter: blur(26px) saturate(180%) !important;
+    backdrop-filter: blur(26px) saturate(180%) !important;
+    background-color: rgba(255, 255, 255, 0.6) !important;
+  }
+}
 
 /* ============================================================
    ДОСТУПНОСТЬ: уменьшить движение
